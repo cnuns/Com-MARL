@@ -56,16 +56,13 @@ class EnvUtil(ABC):
 def add_parser_commons(parser):
     #! common-scenario
     parser.add_argument('--agent_visible', type=int, default=1)
-    # parser.add_argument('--InputType', type=str, default='v1', help='default(fully centrailized) / v1: local view')
-    # parser.add_argument('--OutputType', type=str, default='', help='')
-    # parser.add_argument('--RewDesign', type=str, default='', help='')
-    parser.add_argument('--rendering', type=int, default=0, help='0: No / 1: Yes')
+    parser.add_argument('--rendering', type=int, default=0, help='render a scenario or not, 0: No / 1: Yes')
 
     #! common-loss and range
     # Loss Type
     parser.add_argument('--loss_type', nargs='+', type=int, default=(1, 1, 0), help='(ASSYM, EVERY_GCN, each_transmit)')
     parser.add_argument('--loss_apply', type=int, default=1, help='0: EVERY_ENVSTEP / 1: EVERY_GCN')
-    parser.add_argument('--channelType', type=str, default='FC',
+    parser.add_argument('--channelType', type=str, default=None,
                         help='FC:fully connection / FL: fully loss / IID: identically independent distrinution loss / GE: gilbert eliot loss')
     parser.add_argument('--InputChannelInfo', type=int, default=0, help='Give channel information to Model or Not')
     
@@ -130,7 +127,7 @@ def add_parser_commons(parser):
     parser.add_argument('--debug', type=int, default=0, help='')
     parser.add_argument('--torch_tensor_type', type=str, default='float', help='default tensor type: float or double')
 
-    parser.add_argument('--device', type=str, default='cuda:0')
+    parser.add_argument('--device', type=str, default='cpu', help='cpu / cuda:0 / cuda:1 / ...')
     parser.add_argument('--hybrid', type=int, default=0)
     
     parser.add_argument('--cmd', type=str, default='train_test', help='train / test / train_test (sequentially run)')
@@ -182,15 +179,12 @@ def get_parser_to_args(parser):
             if float(v) == int(v):
                 d[k] = int(v)
     
-    #! CTCE
     if args.categorical_mlp_hidden_sizes is None:
         args.categorical_mlp_hidden_sizes = [128, 64, 32] # Default hidden sizes
 
-    #! CTDE
     if args.policy_hidden_sizes is None:
         args.policy_hidden_sizes = [128, 64, 32] # Default hidden sizes
 
-    #! CENT
     if args.hidden_sizes is None:
         args.hidden_sizes = [128, 64, 32] # Default hidden sizes
 
@@ -212,6 +206,13 @@ def get_parser_to_args(parser):
         args.trpl = args.tepl = args.loss
     else:
         args.tepl = args.loss
+        
+    if args.loss == 0:
+        args.channelType = 'FC' # fully loss
+    elif 0 < args.loss and args.loss < 1.0: 
+        args.channelType = 'IID'
+    elif args.loss == 1:
+        args.channelType = 'FL' # fully connected
     
     return args 
 

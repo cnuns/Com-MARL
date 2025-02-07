@@ -17,6 +17,7 @@ teDataPath = f'{current_file_path}/data/test/matlab'
 teHistoryPath = f'{current_file_path}/data/test/log'
 teDataBKPath = f'{current_file_path}/data/test/backup'
 
+if not os.path.isdir(trPath): os.mkdir(f'{current_file_path}/data')
 if not os.path.isdir(trPath): os.mkdir(trPath)
 if not os.path.isdir(teDataRoot): os.mkdir(teDataRoot)
 if not os.path.isdir(tePath): os.mkdir(tePath)

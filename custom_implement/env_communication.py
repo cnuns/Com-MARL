@@ -159,7 +159,7 @@ def update_communication_state(slf):
 def print_env_params(slf, option):
     if option == True:
         class_variables = slf.__dict__
-        print('\n\n############### VMAS Env Params Applyed ###############')
+        print('\n\n############### Env Params Applyed ###############')
         for k, v in class_variables.items():
             if type(v) == list:
                 if len(v) > 100:

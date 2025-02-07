@@ -225,6 +225,7 @@ if __name__ == '__main__':
     # args.Sen = 1
     # args.Den = 0.04
     # args.Cap = 2
+    # args.loss = 0
     # args.cmd = 'train' # train / test / train_test (sequentially runs)
     #! Run by
     # python runner_pp_commDP.py --cmd train --map 10 --sen 1 --den 0.04 --cap 2 --loss 0

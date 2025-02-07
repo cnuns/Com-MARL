@@ -27,68 +27,9 @@ from .my_optimizer.adam import Adam
 
 import time
 import random
-import pickle
 import gc
-
-#! Debug
 import os
-from torchviz import make_dot
 from datetime import datetime
-
-this_path = os.getcwd()
-
-n_digit = 6
-def save_data(fn, data):
-    import pickle
-    with open(f'./{fn}.pkl', 'wb') as f:
-        pickle.dump(data, f)
-
-def trc(x):
-    try:
-        return torch.trunc(x * 10**n_digit) / (10**n_digit)
-    except:
-        return x
-    
-def wait_for_gpu(gpu_max):
-    gpu_mem = float(get_gpu_memory())
-    # gpu_properties = torch.cuda.get_device_properties(0)
-    # real_max_mem = float(f'{gpu_properties.total_memory / (1024**3)}')
-    # if real_max_mem < gpu_max[1]:
-    #     if gpu_mem > 15.00:
-    #         return
-
-    while gpu_mem < 1.1*gpu_max[1]:
-        random_value = random.random() * 10 * 1 # wait for [0~10] * 0.5 seconds
-        print(f'!! Wait For GPU MEM: sleep({random_value})')
-        time.sleep(random_value)
-        gpu_mem = float(get_gpu_memory())
-
-def add_queue(path='./queues'):
-    # Get the current time.
-    current_time = datetime.now()
-    # Limit the number of decimal places (e.g., three decimal places).
-    formatted_time = current_time.strftime("%Y%m%d%H%M%S%f") + f'r{random.random():.3f}' #[:-3]
-
-    with open(f'{path}/queue_{formatted_time}', 'w') as f:
-        pass
-
-    return formatted_time
-
-def wait_queue(formatted_time, path='./queues'):
-    while True:
-        with open(f'{path}/flag.txt', 'r') as f:
-            line = f.readline()
-
-        if formatted_time in line:
-            break
-        else:
-            time.sleep(0.1)
-
-def delete_queue(formatted_time, path='./queues', ):
-    os.remove(f'{path}/queue_{formatted_time}')
-
-    with open(f'{path}/flag.txt', 'w') as f:
-        f.write('exit')
 
 def get_gpu_alloc(device=0):
     device = torch.device(f"cuda:{device}")

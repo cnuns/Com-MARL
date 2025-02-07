@@ -10,6 +10,7 @@ import numpy as np
 from env_uitils import EnvUtil, add_parser_commons, get_parser_to_args
 from formats import FileFormat
 
+
 trPath = f'{current_file_path}/data/model'
 teDataRoot = f'{current_file_path}/data/test'
 tePath = f'{current_file_path}/data/test/csv'
@@ -17,6 +18,7 @@ teDataPath = f'{current_file_path}/data/test/matlab'
 teHistoryPath = f'{current_file_path}/data/test/param'
 teDataBKPath = f'{current_file_path}/data/test/backup'
 
+if not os.path.isdir(trPath): os.mkdir(f'{current_file_path}/data')
 if not os.path.isdir(trPath): os.mkdir(trPath)
 if not os.path.isdir(teDataRoot): os.mkdir(teDataRoot)
 if not os.path.isdir(tePath): os.mkdir(tePath)
