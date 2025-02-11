@@ -151,6 +151,7 @@ class CentralizedMAOnPolicyVectorizedSampler(BatchSampler):
                 env_infos = [dict() for _ in range(self._vec_env.num_envs)]
             if agent_infos is None:
                 agent_infos = [dict() for _ in range(self._vec_env.num_envs)]
+                
             for idx, observation, avail_action, action, reward, env_info, \
                 agent_info, done, dist_adj, ave_deg, diameter, ave_trput, channel in zip(itertools.count(), obses, avail_actions,
                 actions, rewards, env_infos, agent_infos, dones, dist_adjs, ave_degs, diameters, ave_trputs, channels):
